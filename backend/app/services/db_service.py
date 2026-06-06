@@ -18,7 +18,7 @@ def save_ai_result_to_db(project_name: str, raw_text: str, ai_data: AIProjectAna
         "ai_suggestions": ai_data.ai_suggestions
     }).execute()
     
-    project_id = project_response.data["id"]
+    project_id = project_response.data[0]["id"]
 
     # 2. Lưu từng Danh mục và Tài sản tương ứng
     for category in ai_data.categories:
@@ -29,7 +29,7 @@ def save_ai_result_to_db(project_name: str, raw_text: str, ai_data: AIProjectAna
             "slug": category.slug
         }).execute()
         
-        category_id = cat_response.data["id"]
+        category_id = cat_response.data[0]["id"]
         
         # Tạo danh sách tài sản (Assets) để insert hàng loạt (Bulk Insert)
         assets_to_insert = [
