@@ -47,7 +47,20 @@ app.add_middleware(
 
 # Đăng ký Endpoint API
 app.include_router(organize.router, prefix="/api/v1")
+@app.middleware("http")
+async def debug_requests(request, call_next):
+    print(
+        f"METHOD={request.method} "
+        f"PATH={request.url.path}"
+    )
 
+    response = await call_next(request)
+
+    print(
+        f"STATUS={response.status_code}"
+    )
+
+    return response
 @app.get("/")
 def read_root():
     return {"message": "AI Asset Organizer API is running!"}
