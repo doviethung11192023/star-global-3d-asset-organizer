@@ -1,0 +1,11 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Chỉ cài arize-phoenix (nhẹ hơn full backend)
+RUN pip install --no-cache-dir arize-phoenix==14.6.0
+
+# Phoenix chạy HTTP server cho UI + traces, và gRPC server cho data ingestion
+# Railway gán PORT cho HTTP. gRPC mặc định 4317, có thể đổi qua env.
+EXPOSE 6006
+CMD python -m phoenix.server.main serve --host 0.0.0.0
